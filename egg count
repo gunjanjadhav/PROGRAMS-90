@@ -1,1 +1,23 @@
+package count;
 
+public class EggCount {
+	
+	    public static void main(String[] args) {
+	        int n = 38;
+	        int eggs = calculateEggs(n);
+	        
+	        System.out.println("Number of eggs the 38th person has: " + eggs);
+	    }
+	    
+	    public static int calculateEggs(int n) {
+	        int eggs = 1;
+	        
+	        for (int i = 1; i <= n; i++) {
+	            eggs = eggs + (int) Math.pow(i,i); 
+	        }
+	        
+	        return eggs;
+	    }
+	}
+	
+	
