@@ -1,0 +1,75 @@
+package com;
+
+
+
+class LibraryItem {
+	private String title;
+	 private int ItemId;
+
+
+
+
+
+public LibraryItem(String title, int itemId) {
+	super();
+	this.title = title;
+	ItemId = itemId;
+}
+public void displayinfo() {
+    System.out.println("display book information");
+
+
+
+}
+public void setTitle(String title) {
+	this.title=title;
+	
+}
+public String getTitle() {
+	return this.title;
+}
+}
+ class Book extends LibraryItem {
+	 private String author;
+	    public Book (String title, int ItemId,String author) {
+	        super(author,ItemId);
+	        this.author=author;
+	    }
+	    public void setauthor(String author) {
+	    	this.author=author;
+	   
+ }
+	    public String getauthor() {
+	    	return this.author;
+	    }
+ }
+ class DVD extends LibraryItem {
+	 private int duration;
+ 
+	    public DVD (String title,int ItemId,int duration) {
+	    	
+	        super(title,ItemId);
+	        this.duration=duration;
+	        
+	    }   
+	    public void setduration(int duration) {
+	    	this.duration=duration;
+	   
+ }
+	    public int getduration() {
+	    	return this.duration;
+	    }
+
+
+
+
+public abstract class LibraryMember {
+	private int memberId;
+	private String name;
+	
+public LibraryMember(int memberId,String name) {
+		this.memberId=memberId;
+		this.name=name;
+	}
+
+}
