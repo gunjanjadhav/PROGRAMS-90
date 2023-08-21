@@ -1,0 +1,61 @@
+
+interface Vehicle {
+    void start();
+    void accelerate();
+    void brake();
+}
+
+
+class Car implements Vehicle {
+   
+    public void start() {
+        System.out.println("Car started.");
+    }
+
+
+    public void accelerate() {
+        System.out.println("Car is accelerating.");
+    }
+
+   
+    public void brake() {
+        System.out.println("Car is braking.");
+    }
+}
+
+
+class Motorcycle implements Vehicle {
+   
+    public void start() {
+        System.out.println("Motorcycle started.");
+    }
+
+  
+    public void accelerate() {
+        System.out.println("Motorcycle is accelerating.");
+    }
+
+
+    public void brake() {
+        System.out.println("Motorcycle is braking.");
+    }
+}
+
+public class InterfaceDemo {
+    public static void main(String[] args) {
+       
+        Vehicle car = new Car();
+        Vehicle motorcycle = new Motorcycle();
+        
+  
+        car.start();
+        car.accelerate();
+        car.brake();
+        
+        System.out.println();
+        
+        motorcycle.start();
+        motorcycle.accelerate();
+        motorcycle.brake();
+    }
+}
