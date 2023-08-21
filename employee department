@@ -1,0 +1,95 @@
+import java.util.Scanner;
+
+class Employee {
+    private int id;
+    private String name;
+
+    public Employee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+class Manager extends Employee {
+    private String department;
+
+    public Manager(int id, String name, String department) {
+        super(id, name);
+        this.department = department;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+}
+
+class Developer extends Employee {
+    private String programmingLanguage;
+
+    public Developer(int id, String name, String programmingLanguage) {
+        super(id, name);
+        this.programmingLanguage = programmingLanguage;
+    }
+
+    public String getProgrammingLanguage() {
+        return programmingLanguage;
+    }
+}
+
+public class InheritanceDemo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter manager's name: ");
+        String managerName = scanner.nextLine();
+        System.out.print("Enter manager's ID: ");
+        int managerId = scanner.nextInt();
+        scanner.nextLine(); 
+
+        System.out.print("Enter manager's department: ");
+        String department = scanner.nextLine();
+
+        Manager manager = new Manager(managerId, managerName, department);
+
+        System.out.print("\nEnter developer's name: ");
+        String developerName = scanner.nextLine();
+        System.out.print("Enter developer's ID: ");
+        int developerId = scanner.nextInt();
+        scanner.nextLine(); 
+
+        System.out.print("Enter developer's programming language: ");
+        String programmingLanguage = scanner.nextLine();
+
+        Developer developer = new Developer(developerId, developerName, programmingLanguage);
+
+        System.out.println("\nManager Details:");
+        displayEmployeeDetails(manager);
+
+        System.out.println("\nDeveloper Details:");
+        displayEmployeeDetails(developer);
+
+        scanner.close();
+    }
+
+    public static void displayEmployeeDetails(Employee employee) {
+        System.out.println("Name: " + employee.getName());
+        System.out.println("ID: " + employee.getId());
+
+        if (employee instanceof Manager) {
+            Manager manager = (Manager) employee;
+            System.out.println("Department: " + manager.getDepartment());
+        }
+        else if (employee instanceof Developer) {
+            Developer developer = (Developer) employee;
+            System.out.println("Programming Language: " + developer.getProgrammingLanguage());
+        }
+    }
+}
