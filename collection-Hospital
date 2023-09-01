@@ -1,0 +1,93 @@
+//main.java
+package HospitalManagement;
+
+public class Main {
+    public static void main(String[] args) {
+        Patient patient=new Patient(1,"Gunjan","Flue");
+
+        PatientManagement patientManagement=new PatientManagement();
+        patientManagement.addPatient(patient);
+        patientManagement.showPatientsDetails();
+
+    }
+}
+//patient.java
+ package HospitalManagement;
+
+public class Patient {
+    private int patientId;
+    private String patientName;
+    private String diseaseType;
+
+    public Patient(int patientId, String patientName, String diseaseType) {
+        this.patientId = patientId;
+        this.patientName = patientName;
+        this.diseaseType = diseaseType;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "patientId=" + patientId +
+                ", patientName='" + patientName + '\'' +
+                ", diseaseType='" + diseaseType + '\'' +
+                '}';
+    }
+
+    public String getDiseaseType() {
+        return diseaseType;
+    }
+
+    public void setDiseaseType(String diseaseType) {
+        this.diseaseType = diseaseType;
+    }
+}
+//hospital.java
+ package HospitalManagement;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class PatientManagement {
+
+    private static Map<Integer,Patient> patientDetails=new HashMap<>();
+    public PatientManagement()
+    {
+
+    }
+
+    public void addPatient(Patient patient)
+    {
+        PatientManagement.patientDetails.put(patient.getPatientId(),patient);
+    }
+
+    public Patient getpatientDetailsUsingID(int id)
+    {
+        return PatientManagement.patientDetails.get(id);
+    }
+    public void showPatientsDetails()
+    {
+        for(Integer patientId:PatientManagement.patientDetails.keySet())
+        {
+            System.out.println(getpatientDetailsUsingID(patientId));
+        }
+    }
+
+
+}
