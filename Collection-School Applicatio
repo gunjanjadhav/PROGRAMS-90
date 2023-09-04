@@ -1,0 +1,159 @@
+package SchoolApplication;
+
+public class Main {
+    public static void main(String[] args) {
+        Student student1=new Student(1,"Gunjan",09);
+        Teacher teacher1=new Teacher(421,"Mr.Sagar","CoreJava");
+
+        SchoolManagement schoolManagement=new SchoolManagement();
+
+        schoolManagement.addStudent(student1);
+        schoolManagement.addTeacher(teacher1);
+        schoolManagement.displayStudentDetails();
+        schoolManagement.displayTeacherDetails();
+    }
+}
+//school  management java
+import java.util.*;
+
+public class SchoolManagement {
+    private static Map<String, List<Object>> schoolDeatails=new HashMap<>();
+    static{
+        schoolDeatails.put("Students",new ArrayList<Object>());
+        schoolDeatails.put("Teachers",new ArrayList<Object>());
+    }
+
+    public SchoolManagement()
+    {
+
+    }
+    public void addStudent(Student student)
+    {
+        SchoolManagement.schoolDeatails.get("Students").add(student);
+    }
+    public void addTeacher(Teacher teacher)
+    {
+        SchoolManagement.schoolDeatails.get("Teachers").add(teacher);
+    }
+    public void displayStudentDetails()
+    {
+        List<Object> studentList=SchoolManagement.schoolDeatails.get("Students");
+        for(Object student:studentList)
+        {
+            System.out.println(student);
+        }
+    }
+    public void displayTeacherDetails()
+    {
+        List<Object> teacherList=SchoolManagement.schoolDeatails.get("Teachers");
+        for(Object teacher:teacherList)
+        {
+            System.out.println(teacher);
+        }
+    }
+
+}
+//stuentclass.java
+public class Student {
+    private int studentId;
+    private String studentName;
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public Student(int studentId, String studentName, int standard) {
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.standard = standard;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public int getStandard() {
+        return standard;
+    }
+
+    public void setStandard(int standard) {
+        this.standard = standard;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", studentName='" + studentName + '\'' +
+                ", standard=" + standard +
+                '}';
+    }
+
+    private int standard;
+
+    public Student()
+    {
+
+    }
+
+}
+//teacherclass.java
+
+public class Teacher {
+
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacherId=" + teacherId +
+                ", name='" + name + '\'' +
+                ", subject='" + subject + '\'' +
+                '}';
+    }
+    public Teacher()
+    {
+
+    }
+
+    public Teacher(int teacherId, String name, String subject) {
+        this.teacherId = teacherId;
+        this.name = name;
+        this.subject = subject;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    private int teacherId;
+    private String name;
+
+    private String subject;
+}
