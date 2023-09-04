@@ -1,0 +1,135 @@
+// Main file
+package ProjectManagement;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+    }
+}
+//Member java
+public class Member {
+    private int memberId;
+    private int memberName;
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "memberId=" + memberId +
+                ", memberName=" + memberName +
+                '}';
+    }
+
+    public Member(int memberId, int memberName) {
+        this.memberId = memberId;
+        this.memberName = memberName;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
+
+    public int getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(int memberName) {
+        this.memberName = memberName;
+    }
+    public Member()
+    {
+
+    }
+}
+//Project.java
+import java.util.Set;
+
+public class Project {
+    private int projectId;
+    private int projectName;
+
+    private Set<Member> teamMembers;
+
+    public Project()
+    {
+
+    }
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
+    public int getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(int projectName) {
+        this.projectName = projectName;
+    }
+
+    public Set<Member> getTeamMembers() {
+        return teamMembers;
+    }
+
+    public Project(int projectId, int projectName, Set<Member> teamMembers) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.teamMembers = teamMembers;
+    }
+
+    public void setTeamMembers(Set<Member> teamMembers) {
+        this.teamMembers = teamMembers;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "projectId=" + projectId +
+                ", projectName=" + projectName +
+                ", teamMembers=" + teamMembers +
+                '}';
+    }
+}
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ProjectHandler {
+
+    private static Map<Integer,Project> projectDetails=new HashMap<>();
+
+    public ProjectHandler()
+    {
+
+    }
+    public void addProject(Project project)
+    {
+        ProjectHandler.projectDetails.put(project.getProjectId(),project);
+    }
+
+    public void addTeamMemberToProject( int projectId,Member teamMember)
+    {
+        ProjectHandler.projectDetails.get(projectId).getTeamMembers().add(teamMember);
+    }
+
+    public void viewSpecificProjectDetails(int projectId)
+    {
+        Project project=ProjectHandler.projectDetails.get(projectId);
+        System.out.println(project);
+    }
+
+    public void listProjectDetails()
+    {
+        for(Integer projectId:ProjectHandler.projectDetails.keySet())
+        {
+            System.out.println(ProjectHandler.projectDetails.get(projectId));
+        }
+    }
+}
