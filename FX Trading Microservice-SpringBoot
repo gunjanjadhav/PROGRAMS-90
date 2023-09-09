@@ -1,0 +1,75 @@
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@SpringBootApplication
+public class FXTradingApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(FXTradingApplication.class, args);
+    }
+}
+
+@Controller
+@RequestMapping("/forex")
+class ForexController {
+    private final double usdToInrRate = 66.00;
+    private final List<ForexTrade> trades = new ArrayList<>();
+
+    @GetMapping("/")
+    public String showMenu() {
+        return "menu";
+    }
+
+    @PostMapping("/bookTrade")
+    public String bookTrade(
+            @RequestParam String customerName,
+            @RequestParam String currencyPair,
+            @RequestParam double amount,
+            @RequestParam(defaultValue = "No") String getRate,
+            @RequestParam String decision) {
+
+        if (!currencyPair.equals("USDINR")) {
+            return "invalidCurrencyPair";
+        }
+
+        double rate = usdToInrRate;
+        if (getRate.equalsIgnoreCase("Yes")) {
+            rate = usdToInrRate;
+        }
+
+        double inrAmount = amount * rate;
+        if (decision.equalsIgnoreCase("Book")) {
+            trades.add(new ForexTrade(customerName, currencyPair, amount, rate, inrAmount));
+            return "success";
+        } else {
+            return "cancelled";
+        }
+    }
+
+    @GetMapping("/printTrades")
+    public String printTrades() {
+        return "trades";
+    }
+}
+
+class ForexTrade {
+    private String customerName;
+    private String currencyPair;
+    private double amount;
+    private double rate;
+    private double inrAmount;
+
+    public ForexTrade(String customerName, String currencyPair, double amount, double rate, double inrAmount) {
+        this.customerName = customerName;
+        this.currencyPair = currencyPair;
+        this.amount = amount;
+        this.rate = rate;
+        this.inrAmount = inrAmount;
+    }
+
+    // Getters and setters (omitted for brevity)
+}
