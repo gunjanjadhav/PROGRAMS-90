@@ -1,128 +1,228 @@
-//main.java
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
+//services
+
+//FXTrading.java
+
+
+
+package com.FXTrading.services;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+import org.springframework.stereotype.Component;
+import com.FXTrading.model.FXTradingEntity;
+
+@Component
+public class FXTradingLogic  {
+	
+	private List<FXTradingEntity> bookedTradesEntities=new ArrayList<>();
+	
+
+	
+	public Object doTrade(FXTradingEntity fxTradingEntity){
+		
+		Map<String, String> errorsByUser=new HashMap<>();
+		
+		if(fxTradingEntity.getCustomerName().isBlank())
+		{
+			errorsByUser.put("Customer-Name", "Customer name cannot be empty");
+		}
+		if(fxTradingEntity.getUsd_Amount()<0)
+		{
+			errorsByUser.put("USD-Amount", "Amount cannot be Negative");
+		}
+		if(!fxTradingEntity.getCurrencyPair().equals("USDINR"))
+		{
+			errorsByUser.put("Currency-Pair", "Currency pair is not USDINR");
+		}
+			
+		if(errorsByUser.isEmpty())
+		{
+			String indianAmount= ""+(fxTradingEntity.getUsd_Amount()*66);
+			fxTradingEntity.setIndianAmount(indianAmount);
+	       
+			this.bookedTradesEntities.add(fxTradingEntity);
+			return fxTradingEntity;
+		}
+		else {
+			return errorsByUser;
+		}
+		
+	}
+	
+	public List<FXTradingEntity> getTradeList()
+	{
+		return this.bookedTradesEntities;
+	}
+	
+
+
+//request.java
+
+
+package com.FXTrading.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.ui.Model;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication
-@Controller
-public class FXTradingProgram {
+import com.FXTrading.model.FXTradingEntity;
+import com.FXTrading.services.FXTradingLogic;
 
-    // Remove the static variables
+@RestController
+public class FXTradingRequests {
 
-    // Create a list to store trades
-    private List<ForexTrade> trades = new ArrayList<>();
+	@Autowired
+	private FXTradingLogic fxTradingFormatImpl;
 
-    public static void main(String[] args) {
-        SpringApplication.run(FXTradingProgram.class, args);
-    }
+	@PostMapping(value = "/trade")
+	public Object doTrading(@RequestBody FXTradingEntity fxTradingEntity) {
+		
+		if (fxTradingEntity == null) {
+			return "Not Booked";
+		}
+		try {
+			Object object = fxTradingFormatImpl.doTrade(fxTradingEntity);
+			if (object instanceof Map) {
+				((Map) object).put("Status", "Not Booked");
+				return object;
+			} else {
+				return "Trade Booked";
+			}
 
-    @GetMapping("/")
-    public String showMenu() {
-        return "menu";
-    }
+		} catch (Exception e) {
+			return e.getMessage();
+		}
 
-    @PostMapping("/bookTrade")
-    public String bookTrade(
-            @RequestParam("customerName") String customerName,
-            @RequestParam("currencyPair") String currencyPair,
-            @RequestParam("amount") double amount,
-            @RequestParam("getRate") String getRate,
-            Model model) {
-        // Implement the bookTrade logic here
-        // Add the trade to the list and return appropriate response
-    }
+	}
 
-    @GetMapping("/printTrades")
-    public String printTrades(Model model) {
-        // Implement the printTrades logic here
-        // Add the trades to the model and return a view to display them
-    }
+	@GetMapping("/get-all-trades")
+	public Object getAllTrades() {
+		List<FXTradingEntity> tradeList = this.fxTradingFormatImpl.getTradeList();
+		if (tradeList.isEmpty()) {
+			return "Your trade List is Empty";
+		} else {
+			return tradeList;
+		}
+	}
 
-    @GetMapping("/exit")
-    public String exitProgram(Model model) {
-        // Implement the exitProgram logic here
-        // Provide a confirmation view to exit the program
-    }
+}
+	
+	
+	
 }
 
 
 
 
-//templetes.html
+
+
+//entity.java
+package com.FXTrading.model;
+public class FXTradingEntity{
+		
+	private double usd_Amount;
+	
+	private String customerName;
+	
+	private String currencyPair;
+		
+	public String getIndianAmount() {
+		return indianAmount;
+	}
+
+	public void setIndianAmount(String indianAmount) {
+		this.indianAmount = indianAmount;
+	}
+
+	private String indianAmount;
+	
+	
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	
+	public String getCurrencyPair() {
+		return currencyPair;
+	}
 
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Forex Trading Menu</title>
-</head>
-<body>
-    <h1>Select an option:</h1>
-    <form method="post" action="/bookTrade">
-        <label>1. Book Trade</label><br>
-        <!-- Add input fields for customerName, currencyPair, amount, and getRate -->
-        <input type="submit" value="Submit">
-    </form>
-    <form method="get" action="/printTrades">
-        <label>2. Print Trades</label><br>
-        <input type="submit" value="Submit">
-    </form>
-    <form method="get" action="/exit">
-        <label>3. Exit</label><br>
-        <input type="submit" value="Submit">
-    </form>
-</body>
-</html>
+//application
 
 
+package com.FXTrading;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
+public class FxTradingApplication {
 
-//trades.html
+	public static void main(String[] args) {
+		
+		SpringApplication.run(FxTradingApplication.class, args);
+		
+		System.out.println("Application Started");
+	}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Booked Trades</title>
-</head>
-<body>
-    <h1>Booked Trades</h1>
-    <table>
-        <tr>
-            <th>TradeNo</th>
-            <th>CurrencyPair</th>
-            <th>CustomerName</th>
-            <th>Amount</th>
-            <th>Rate</th>
-        </tr>
-        <!-- Loop through trades and display them in the table -->
-    </table>
-    <a href="/">Back to Menu</a>
-</body>
-</html>
+}
+	public void setCurrencyPair(String currencyPair) {
+		this.currencyPair = currencyPair;
+	}
 
+	
+	public FXTradingEntity() {
+		super();
+	}
 
+	public FXTradingEntity(double usd_Amount, String customerName, String currencyPair) {
+		super();
+		this.usd_Amount = usd_Amount;
+		
+		this.customerName = customerName;
+		this.currencyPair = currencyPair;
+	}
 
+	@Override
+	public String toString() {
+		return "FXTradingEntity [usd_Amount=" + usd_Amount + ", customerName="
+				+ customerName + ", currencyPair=" + currencyPair + ", indianAmount=" + indianAmount + "]";
+	}
 
-//exit.html
+	public double getUsd_Amount() {
+		return usd_Amount;
+	}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Exit Confirmation</title>
-</head>
-<body>
-    <h1>Do you really want to exit?</h1>
-    <form method="post" action="/exit">
-        <input type="submit" name="confirmation" value="Yes">
-        <input type="submit" name="confirmation" value="No">
-    </form>
-</body>
-</html>
+	public void setUsd_Amount(double usd_Amount) {
+		this.usd_Amount = usd_Amount;
+	}
+
+	
+
+	
+	
+
+	
+
+	
+	
+	
+	
+	
+}
+
