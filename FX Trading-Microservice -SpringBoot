@@ -1,1 +1,128 @@
+//main.java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import java.util.ArrayList;
+import java.util.List;
 
+@SpringBootApplication
+@Controller
+public class FXTradingProgram {
+
+    // Remove the static variables
+
+    // Create a list to store trades
+    private List<ForexTrade> trades = new ArrayList<>();
+
+    public static void main(String[] args) {
+        SpringApplication.run(FXTradingProgram.class, args);
+    }
+
+    @GetMapping("/")
+    public String showMenu() {
+        return "menu";
+    }
+
+    @PostMapping("/bookTrade")
+    public String bookTrade(
+            @RequestParam("customerName") String customerName,
+            @RequestParam("currencyPair") String currencyPair,
+            @RequestParam("amount") double amount,
+            @RequestParam("getRate") String getRate,
+            Model model) {
+        // Implement the bookTrade logic here
+        // Add the trade to the list and return appropriate response
+    }
+
+    @GetMapping("/printTrades")
+    public String printTrades(Model model) {
+        // Implement the printTrades logic here
+        // Add the trades to the model and return a view to display them
+    }
+
+    @GetMapping("/exit")
+    public String exitProgram(Model model) {
+        // Implement the exitProgram logic here
+        // Provide a confirmation view to exit the program
+    }
+}
+
+
+
+
+//templetes.html
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forex Trading Menu</title>
+</head>
+<body>
+    <h1>Select an option:</h1>
+    <form method="post" action="/bookTrade">
+        <label>1. Book Trade</label><br>
+        <!-- Add input fields for customerName, currencyPair, amount, and getRate -->
+        <input type="submit" value="Submit">
+    </form>
+    <form method="get" action="/printTrades">
+        <label>2. Print Trades</label><br>
+        <input type="submit" value="Submit">
+    </form>
+    <form method="get" action="/exit">
+        <label>3. Exit</label><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+
+
+
+//trades.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booked Trades</title>
+</head>
+<body>
+    <h1>Booked Trades</h1>
+    <table>
+        <tr>
+            <th>TradeNo</th>
+            <th>CurrencyPair</th>
+            <th>CustomerName</th>
+            <th>Amount</th>
+            <th>Rate</th>
+        </tr>
+        <!-- Loop through trades and display them in the table -->
+    </table>
+    <a href="/">Back to Menu</a>
+</body>
+</html>
+
+
+
+
+//exit.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exit Confirmation</title>
+</head>
+<body>
+    <h1>Do you really want to exit?</h1>
+    <form method="post" action="/exit">
+        <input type="submit" name="confirmation" value="Yes">
+        <input type="submit" name="confirmation" value="No">
+    </form>
+</body>
+</html>
